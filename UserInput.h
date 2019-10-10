@@ -1,18 +1,50 @@
 #ifndef USERINPUT_H
 #define USERINPUT_H
 
+/////////////////////////////////////////////////////////////////////////
+//	Includes
+/////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
 
+//
+//	@summary	Handles the user input.
+//
 class UserInput
 {
-public:
-	UserInput();
-	virtual ~UserInput();
-	
-	static bool GetIntegerChoice(int min, int max, int &choice);
-	static void GetStringOnlyInput(std::string &input);
-	static void GetIntegerOnlyInput(int &input);
+	/////////////////////////////////////////////////////////////////////////
+	//	Public
+	/////////////////////////////////////////////////////////////////////////
+	public:
+
+		/////////////////////////////////////////////////////////////////////////
+		//	Variables
+		/////////////////////////////////////////////////////////////////////////
+
+		/////////////////////////////////////////////////////////////////////////
+		//	Methods
+		/////////////////////////////////////////////////////////////////////////
+			
+		//
+		//	@summary	Gets the integer choice from the user.
+		//	@param		min		The minimum value.
+		//	@param		max		The maximum value.
+		//	@param		choice	The users choice.
+		//	@return		true if successful; otherwise false.
+		//
+		static bool GetIntegerChoice(int min, int max, int &choice);
+
+		//
+		//	@summary	Gets string only input.
+		//	@param		input	The input to be checked.
+		//
+		static void GetStringOnlyInput(std::string &input);
+
+		//
+		//	@summary	Gets integer only input.
+		//	@param		input	The input to be checked.
+		//
+		static void GetIntegerOnlyInput(int &input);
 };
 #endif // USERINPUT_H
 

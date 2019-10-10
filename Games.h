@@ -1,28 +1,71 @@
 #ifndef GAMES_H
 #define GAMES_H
 
+/////////////////////////////////////////////////////////////////////////
+//	Includes
+/////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
+
 #include "UserInput.h"
 
+//
+//	@summary	Handles all the games.
+//
 class Games
 {
-public:
-	Games();
-	virtual ~Games();
+	
+	/////////////////////////////////////////////////////////////////////////
+	//	Public
+	/////////////////////////////////////////////////////////////////////////
+	public:
+		/////////////////////////////////////////////////////////////////////////
+		//	Types
+		/////////////////////////////////////////////////////////////////////////
 
-	enum PlayerGameType
-	{
-		SinglePlayer,
-		TwoPlayer
-	};
+		//
+		//	@summary	Player
+		//
+		enum PlayerGameType
+		{
+			SinglePlayer,
+			TwoPlayer,
+			Unknown
+		};
 
-	std::string name;
-	int menuMin;
-	int menuMax;
+		/////////////////////////////////////////////////////////////////////////
+		//	Variables
+		/////////////////////////////////////////////////////////////////////////
 
-	virtual std::string GetName() = 0;
-	virtual PlayerGameType GetPlayerGameType() = 0;
-	virtual void GameMenu(int& menuMin, int& menuMax) = 0;
+		/////////////////////////////////////////////////////////////////////////
+		//	Methods
+		/////////////////////////////////////////////////////////////////////////
+
+		//
+		//	@summary	Constructor.
+		//
+		Games();
+
+		//
+		//	@summary	Destructor.
+		//
+		virtual ~Games();
+		
+		//
+		//	@summary	Gets the name of the game.
+		//	@return		The game name.
+		//
+		virtual std::string GetName() = 0;
+		
+		//
+		//	@summary	Gets the player game type of the game.
+		//	@return		The player game type.
+		//
+		virtual PlayerGameType GetPlayerGameType() = 0;
+
+		//
+		//	@summary	Runs the game menu.
+		//
+		virtual void GameMenu() = 0;
 };
 #endif // GAMES_H 

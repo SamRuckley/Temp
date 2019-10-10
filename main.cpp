@@ -1,17 +1,19 @@
+/////////////////////////////////////////////////////////////////////////
+//	Includes
+/////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <string>
-#include "Player.h"
+
+#include "Players.h"
 #include "BattleshipGame.h"
 #include "UserInput.h"
 
-Player* playerPointer = NULL;
-BattleshipGame* battleshipPointer = NULL;
 
-const int mainMenuOptionCount = 1; // Increase count to allow for the other games.
-std::string MainMenuOptions[mainMenuOptionCount]; // Array for the amount of games.
+const int MainMenuOptionCount = 1; // Increase count to allow for the other games.
+std::string MainMenuOptions[MainMenuOptionCount]; // Array for the amount of games.
 
 ///
-/// @brief Fills the array with all of the games.
+/// @summary	Fills the array with all of the games.
 ///
 void InitialiseGames()
 {
@@ -19,16 +21,16 @@ void InitialiseGames()
 	// Ability to add other games.
 
 	// Last option to always be exit.
-	MainMenuOptions[mainMenuOptionCount] = "Exit";
+	MainMenuOptions[MainMenuOptionCount] = "Exit";
 }
 
 ///
-/// @brief Fills the console with all of the game options.
+/// @summary	Fills the console with all of the game options.
 ///
 void MainMenu()
 {
 	std::cout << "-------------------------------------------------" << std::endl;
-	for (int i = 0; i <= mainMenuOptionCount; i++)
+	for (int i = 0; i <= MainMenuOptionCount; i++)
 	{
 		std::cout << i+1 << ". " << MainMenuOptions[i] << std::endl;
 	}
@@ -36,40 +38,64 @@ void MainMenu()
 }
 
 ///
-/// @brief Clears the console.
+/// @summary	Clears the console.
 ///
 void ClearConsole()
 {
 	system("cls");
 }
 
+//
+//	@summary	Main.
+//	@return		An error code.
+//
+int main() 
+{
+	bool success = false;
 
+	Players* playerPointer = NULL;
+	BattleshipGame* battleshipPointer = NULL;
 
+	Players::CreateInstance();
+	playerPointer = Players::GetInstance();
 
+	if (playerPointer != NULL)
+	{
+		success = true;
+	}
 
-int main() {
+	if (success)
+	{
+		success = playerPointer->Initialise();
+	}
+	
+	if (success)
+	{
+		BattleshipGame::CreateInstance();
+		battleshipPointer = BattleshipGame::GetInstance();
+		success = (battleshipPointer != NULL);
+	}
+	
+	if (success)
+	{
+		success = battleshipPointer->Initialise();
+	}
 
-	//Singleton
-	Player::CreateInstance();
-	playerPointer = Player::GetInstance();
-	playerPointer->Initialise();
-
-	BattleshipGame::CreateInstance();
-	battleshipPointer = BattleshipGame::GetInstance();
-	battleshipPointer->Initialise();
+	if (success)
+	{
+		return -1;
+	}
 
 	// Load in the game names
 	InitialiseGames();
-
-	std::string playernametest = "";
-	std::cin >> playernametest;
 
 	// Continually loop
 	while (1)
 	{
 		MainMenu();
 		int choice = 0;
-		UserInput::GetIntegerChoice(1, 2, choice);
+		// Always a minimum of 1 choice, the choice for exit.
+		UserInput::GetIntegerChoice(1, MainMenuOptionCount + 1, choice);
 		int menuMin = 0;
 		int menuMax = 0;
 		bool keepPlaying = false;
@@ -77,11 +103,16 @@ int main() {
 		{
 		case 1:
 			// Battleships
-			battleshipPointer->GameMenu(menuMin, menuMax);
+			battleshipPointer->GameMenu();
 			do
 			{
 				choice = 0;
-				UserInput::GetIntegerChoice(menuMin, menuMax, choice);
+
+				if (!UserInput::GetIntegerChoice(menuMin, menuMax, choice))
+				{
+					break;
+				}
+
 				switch (choice)
 				{
 				case 1:
@@ -99,11 +130,10 @@ int main() {
 				}
 			} while (keepPlaying == true);
 			break;
-		case mainMenuOptionCount+1:
+		case MainMenuOptionCount+1:
 			//Exit
 			return 0;
-			break;
 		}
 	}
-	return 0;
+	return -1;
 }
